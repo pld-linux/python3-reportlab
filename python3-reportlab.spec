@@ -1,45 +1,32 @@
 #
 # Conditional build:
 %bcond_without	doc	# PDF documentation
-%bcond_without	python2 # CPython 2.x module
-%bcond_without	python3 # CPython 3.x module
 
 # TODO:
 # - use system fonts (see files lists) or share fonts for both python versions
 # - tools/docco and tools/pythonpoint as subpackages?
 
-%define		module	ReportLab
 Summary:	Python 2 library for generating PDFs and graphics
 Summary(pl.UTF-8):	Moduły Pythona 2 do generowania PDF-ów oraz grafik
-Name:		python-%{module}
-# keep 3.5.x (or <=3.6.1?) here for python2 support
-Version:	3.5.68
-Release:	7
+Name:		python3-reportlab
+Version:	3.6.13
+Release:	1
 License:	BSD-like
 Group:		Libraries/Python
-#Source0Download: https://bitbucket.org/rptlab/reportlab/downloads/?tab=tags
+#Source0Download: https://pypi.org/simple/reportlab/
 Source0:	https://files.pythonhosted.org/packages/source/r/reportlab/reportlab-%{version}.tar.gz
-# Source0-md5:	92f79d609974ae8d6c57d0e3187db297
-Patch0:		reportlab-types.patch
+# Source0-md5:	8cbb12bb007d2d055d610d05c9869d43
 URL:		https://www.reportlab.com/dev/opensource/
 BuildRequires:	freetype-devel >= 2
 BuildRequires:	libart_lgpl-devel >= 2
-%if %{with python2}
-BuildRequires:	python-devel >= 1:2.7
-BuildRequires:	python-setuptools
-%endif
-%{?with_doc:BuildRequires:	python-pillow >= 4.0.0}
-%if %{with python3}
-BuildRequires:	python3-devel >= 1:3.6
+BuildRequires:	python3-devel >= 1:3.7
+%{?with_doc:BuildRequires:	python3-pillow >= 9.0.0}
 BuildRequires:	python3-setuptools
-%endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	unzip
-Requires:	python-modules >= 1:2.7
-Obsoletes:	python-ReportLab-barcode < 1
-Obsoletes:	python-ReportLab-renderPM < 2
-Obsoletes:	python-ReportLab-rl_accel < 1
+Requires:	python3-modules >= 1:3.7
+Obsoletes:	python3-ReportLab < 3.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -51,28 +38,6 @@ independant PDFs and graphics.
   collections including business chart and diagrams
 
 %description -l pl.UTF-8
-Biblioteka napisana w Pythonie pozwalająca na generowanie niezależnych
-od platformy PDF-ów oraz grafik.
-- Generowanie PDF: używa Pythona, przejrzystego języka obiektowego o
-  warstwowej architekturze
-- Grafika: podstawowe figury geometryczne, kontrolki, a także
-  przykłady, w tym wykresy i diagramy
-
-%package -n python3-%{module}
-Summary:	Python 3 library for generating PDFs and graphics
-Summary(pl.UTF-8):	Moduły Pythona 3 do generowania PDF-ów oraz grafik
-Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.6
-
-%description -n python3-%{module}
-A library written in Python that lets you generate platform
-independant PDFs and graphics.
-- PDF generation: uses Python, a clean OO language, layered
-  architecture
-- Graphics: provides primitive shapes, reusable widgets, sample
-  collections including business chart and diagrams
-
-%description -n python3-%{module} -l pl.UTF-8
 Biblioteka napisana w Pythonie pozwalająca na generowanie niezależnych
 od platformy PDF-ów oraz grafik.
 - Generowanie PDF: używa Pythona, przejrzystego języka obiektowego o
@@ -107,43 +72,25 @@ Przykłady do biblioteki ReportLab.
 
 %prep
 %setup -q -n reportlab-%{version}
-%patch -P0 -p1
 
 %build
-%if %{with python2}
-%py_build
-%endif
-
-%if %{with python3}
 %py3_build
-%endif
 
 %if %{with doc}
 cd docs
-PYTHONPATH=$(echo $(pwd)/../build-2/lib.*) \
-%{__python} genAll.py
+PYTHONPATH=$(echo $(pwd)/../build-3/lib.*) \
+%{__python3} genAll.py
 cd ..
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with python2}
-%py_install
-
-install -d $RPM_BUILD_ROOT%{py_sitescriptdir}/reportlab
-
-%py_postclean
-%{__rm} -r $RPM_BUILD_ROOT%{py_sitedir}/reportlab/graphics/samples
-%endif
-
-%if %{with python3}
 %py3_install
 
 install -d $RPM_BUILD_ROOT%{py3_sitescriptdir}/reportlab
 
 %{__rm} -r $RPM_BUILD_ROOT%{py3_sitedir}/reportlab/graphics/samples
-%endif
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a demos $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
@@ -155,57 +102,7 @@ cp -a demos $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with python2}
 %files
-%defattr(644,root,root,755)
-%doc CHANGES.md LICENSE.txt README.txt
-%dir %{py_sitescriptdir}/reportlab
-%dir %{py_sitedir}/reportlab
-%{py_sitedir}/reportlab-%{version}-py*.egg-info
-%{py_sitedir}/reportlab/*.py[co]
-%dir %{py_sitedir}/reportlab/fonts
-%{py_sitedir}/reportlab/fonts/00readme.txt
-# Dark Garden font (GPL v2+)
-%{py_sitedir}/reportlab/fonts/DarkGardenMK.afm
-%{py_sitedir}/reportlab/fonts/DarkGardenMK.pfb
-%{py_sitedir}/reportlab/fonts/DarkGarden.sfd
-%{py_sitedir}/reportlab/fonts/DarkGarden-*.txt
-# Bitstream Vera font
-%{py_sitedir}/reportlab/fonts/Vera*.ttf
-%{py_sitedir}/reportlab/fonts/bitstream-vera-license.txt
-# ?
-%{py_sitedir}/reportlab/fonts/callig15.afm
-%{py_sitedir}/reportlab/fonts/callig15.pfb
-# Adobe fonts
-%{py_sitedir}/reportlab/fonts/_a*____.pfb
-%{py_sitedir}/reportlab/fonts/_e*____.pfb
-%{py_sitedir}/reportlab/fonts/co*____.pfb
-%{py_sitedir}/reportlab/fonts/sy______.pfb
-%{py_sitedir}/reportlab/fonts/z?______.pfb
-%dir %{py_sitedir}/reportlab/graphics
-%attr(755,root,root) %{py_sitedir}/reportlab/graphics/_renderPM.so
-%{py_sitedir}/reportlab/graphics/*.py[co]
-%dir %{py_sitedir}/reportlab/graphics/barcode
-%{py_sitedir}/reportlab/graphics/barcode/*.py[co]
-%dir %{py_sitedir}/reportlab/graphics/charts
-%{py_sitedir}/reportlab/graphics/charts/*.py[co]
-%dir %{py_sitedir}/reportlab/graphics/widgets
-%{py_sitedir}/reportlab/graphics/widgets/*.py[co]
-%dir %{py_sitedir}/reportlab/lib
-%attr(755,root,root) %{py_sitedir}/reportlab/lib/_rl_accel.so
-%attr(755,root,root) %{py_sitedir}/reportlab/lib/pyHnj.so
-%{py_sitedir}/reportlab/lib/*.py[co]
-%{py_sitedir}/reportlab/lib/hyphen.mashed
-%dir %{py_sitedir}/reportlab/pdfbase
-%{py_sitedir}/reportlab/pdfbase/*.py[co]
-%dir %{py_sitedir}/reportlab/pdfgen
-%{py_sitedir}/reportlab/pdfgen/*.py[co]
-%dir %{py_sitedir}/reportlab/platypus
-%{py_sitedir}/reportlab/platypus/*.py[co]
-%endif
-
-%if %{with python3}
-%files -n python3-%{module}
 %defattr(644,root,root,755)
 %doc CHANGES.md LICENSE.txt README.txt
 %dir %{py3_sitescriptdir}/reportlab
@@ -258,7 +155,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{py3_sitedir}/reportlab/platypus
 %{py3_sitedir}/reportlab/platypus/*.py
 %{py3_sitedir}/reportlab/platypus/__pycache__
-%endif
 
 %if %{with doc}
 %files apidocs
