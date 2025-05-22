@@ -6,8 +6,8 @@
 # - use system fonts (see files lists) or share fonts for both python versions
 # - tools/docco and tools/pythonpoint as subpackages?
 
-Summary:	Python 2 library for generating PDFs and graphics
-Summary(pl.UTF-8):	Moduły Pythona 2 do generowania PDF-ów oraz grafik
+Summary:	Python library for generating PDFs and graphics
+Summary(pl.UTF-8):	Moduły Pythona do generowania PDF-ów oraz grafik
 Name:		python3-reportlab
 Version:	3.6.13
 Release:	1
