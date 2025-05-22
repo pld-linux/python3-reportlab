@@ -9,13 +9,13 @@
 Summary:	Python library for generating PDFs and graphics
 Summary(pl.UTF-8):	Moduły Pythona do generowania PDF-ów oraz grafik
 Name:		python3-reportlab
-Version:	3.6.13
+Version:	4.4.1
 Release:	1
 License:	BSD-like
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/reportlab/
 Source0:	https://files.pythonhosted.org/packages/source/r/reportlab/reportlab-%{version}.tar.gz
-# Source0-md5:	8cbb12bb007d2d055d610d05c9869d43
+# Source0-md5:	d5ac52b0a3fe2c1c8f25680f7d5ea3a2
 URL:		https://www.reportlab.com/dev/opensource/
 BuildRequires:	freetype-devel >= 2
 BuildRequires:	libart_lgpl-devel >= 2
@@ -27,6 +27,7 @@ BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	unzip
 Requires:	python3-modules >= 1:3.7
 Obsoletes:	python3-ReportLab < 3.6
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -88,9 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %py3_install
 
-install -d $RPM_BUILD_ROOT%{py3_sitescriptdir}/reportlab
-
-%{__rm} -r $RPM_BUILD_ROOT%{py3_sitedir}/reportlab/graphics/samples
+%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/reportlab/graphics/samples
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a demos $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
@@ -104,57 +103,54 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.md LICENSE.txt README.txt
+%doc CHANGES.md LICENSE README.txt
 %dir %{py3_sitescriptdir}/reportlab
-%dir %{py3_sitedir}/reportlab
-%{py3_sitedir}/reportlab-%{version}-py*.egg-info
-%{py3_sitedir}/reportlab/*.py
-%{py3_sitedir}/reportlab/__pycache__
-%dir %{py3_sitedir}/reportlab/fonts
-%{py3_sitedir}/reportlab/fonts/00readme.txt
+%{py3_sitescriptdir}/reportlab-%{version}-py*.egg-info
+%{py3_sitescriptdir}/reportlab/*.py
+%{py3_sitescriptdir}/reportlab/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/fonts
+%{py3_sitescriptdir}/reportlab/fonts/00readme.txt
 # Dark Garden font (GPL v2+)
-%{py3_sitedir}/reportlab/fonts/DarkGardenMK.afm
-%{py3_sitedir}/reportlab/fonts/DarkGardenMK.pfb
-%{py3_sitedir}/reportlab/fonts/DarkGarden.sfd
-%{py3_sitedir}/reportlab/fonts/DarkGarden-*.txt
+%{py3_sitescriptdir}/reportlab/fonts/DarkGardenMK.afm
+%{py3_sitescriptdir}/reportlab/fonts/DarkGardenMK.pfb
+%{py3_sitescriptdir}/reportlab/fonts/DarkGarden.sfd
+%{py3_sitescriptdir}/reportlab/fonts/DarkGarden-*.txt
 # Bitstream Vera font
-%{py3_sitedir}/reportlab/fonts/Vera*.ttf
-%{py3_sitedir}/reportlab/fonts/bitstream-vera-license.txt
+%{py3_sitescriptdir}/reportlab/fonts/Vera*.ttf
+%{py3_sitescriptdir}/reportlab/fonts/bitstream-vera-license.txt
 # ?
-%{py3_sitedir}/reportlab/fonts/callig15.afm
-%{py3_sitedir}/reportlab/fonts/callig15.pfb
+%{py3_sitescriptdir}/reportlab/fonts/callig15.afm
+%{py3_sitescriptdir}/reportlab/fonts/callig15.pfb
 # Adobe fonts
-%{py3_sitedir}/reportlab/fonts/_a*____.pfb
-%{py3_sitedir}/reportlab/fonts/_e*____.pfb
-%{py3_sitedir}/reportlab/fonts/co*____.pfb
-%{py3_sitedir}/reportlab/fonts/sy______.pfb
-%{py3_sitedir}/reportlab/fonts/z?______.pfb
-%dir %{py3_sitedir}/reportlab/graphics
-%attr(755,root,root) %{py3_sitedir}/reportlab/graphics/_renderPM.cpython-*.so
-%{py3_sitedir}/reportlab/graphics/*.py
-%{py3_sitedir}/reportlab/graphics/__pycache__
-%dir %{py3_sitedir}/reportlab/graphics/barcode
-%{py3_sitedir}/reportlab/graphics/barcode/*.py
-%{py3_sitedir}/reportlab/graphics/barcode/__pycache__
-%dir %{py3_sitedir}/reportlab/graphics/charts
-%{py3_sitedir}/reportlab/graphics/charts/*.py
-%{py3_sitedir}/reportlab/graphics/charts/__pycache__
-%dir %{py3_sitedir}/reportlab/graphics/widgets
-%{py3_sitedir}/reportlab/graphics/widgets/*.py
-%{py3_sitedir}/reportlab/graphics/widgets/__pycache__
-%dir %{py3_sitedir}/reportlab/lib
-%attr(755,root,root) %{py3_sitedir}/reportlab/lib/_rl_accel.cpython-*.so
-%{py3_sitedir}/reportlab/lib/*.py
-%{py3_sitedir}/reportlab/lib/__pycache__
-%dir %{py3_sitedir}/reportlab/pdfbase
-%{py3_sitedir}/reportlab/pdfbase/*.py
-%{py3_sitedir}/reportlab/pdfbase/__pycache__
-%dir %{py3_sitedir}/reportlab/pdfgen
-%{py3_sitedir}/reportlab/pdfgen/*.py
-%{py3_sitedir}/reportlab/pdfgen/__pycache__
-%dir %{py3_sitedir}/reportlab/platypus
-%{py3_sitedir}/reportlab/platypus/*.py
-%{py3_sitedir}/reportlab/platypus/__pycache__
+%{py3_sitescriptdir}/reportlab/fonts/_a*____.pfb
+%{py3_sitescriptdir}/reportlab/fonts/_e*____.pfb
+%{py3_sitescriptdir}/reportlab/fonts/co*____.pfb
+%{py3_sitescriptdir}/reportlab/fonts/sy______.pfb
+%{py3_sitescriptdir}/reportlab/fonts/z?______.pfb
+%dir %{py3_sitescriptdir}/reportlab/graphics
+%{py3_sitescriptdir}/reportlab/graphics/*.py
+%{py3_sitescriptdir}/reportlab/graphics/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/graphics/barcode
+%{py3_sitescriptdir}/reportlab/graphics/barcode/*.py
+%{py3_sitescriptdir}/reportlab/graphics/barcode/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/graphics/charts
+%{py3_sitescriptdir}/reportlab/graphics/charts/*.py
+%{py3_sitescriptdir}/reportlab/graphics/charts/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/graphics/widgets
+%{py3_sitescriptdir}/reportlab/graphics/widgets/*.py
+%{py3_sitescriptdir}/reportlab/graphics/widgets/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/lib
+%{py3_sitescriptdir}/reportlab/lib/*.py
+%{py3_sitescriptdir}/reportlab/lib/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/pdfbase
+%{py3_sitescriptdir}/reportlab/pdfbase/*.py
+%{py3_sitescriptdir}/reportlab/pdfbase/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/pdfgen
+%{py3_sitescriptdir}/reportlab/pdfgen/*.py
+%{py3_sitescriptdir}/reportlab/pdfgen/__pycache__
+%dir %{py3_sitescriptdir}/reportlab/platypus
+%{py3_sitescriptdir}/reportlab/platypus/*.py
+%{py3_sitescriptdir}/reportlab/platypus/__pycache__
 
 %if %{with doc}
 %files apidocs
