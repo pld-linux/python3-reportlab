@@ -9,22 +9,24 @@
 Summary:	Python library for generating PDFs and graphics
 Summary(pl.UTF-8):	Moduły Pythona do generowania PDF-ów oraz grafik
 Name:		python3-reportlab
-Version:	4.4.1
+Version:	4.4.2
 Release:	1
 License:	BSD-like
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/reportlab/
 Source0:	https://files.pythonhosted.org/packages/source/r/reportlab/reportlab-%{version}.tar.gz
-# Source0-md5:	d5ac52b0a3fe2c1c8f25680f7d5ea3a2
+# Source0-md5:	1cd6cda9783c48acb3d2e4d398e28ed7
 URL:		https://www.reportlab.com/dev/opensource/
 BuildRequires:	freetype-devel >= 2
 BuildRequires:	libart_lgpl-devel >= 2
 BuildRequires:	python3-devel >= 1:3.7
-%{?with_doc:BuildRequires:	python3-pillow >= 9.0.0}
 BuildRequires:	python3-setuptools
+%if %{with doc}
+BuildRequires:	python3-charset_normalizer
+BuildRequires:	python3-pillow >= 9.0.0
+%endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
-BuildRequires:	unzip
 Requires:	python3-modules >= 1:3.7
 Obsoletes:	python3-ReportLab < 3.6
 BuildArch:	noarch
@@ -79,7 +81,7 @@ Przykłady do biblioteki ReportLab.
 
 %if %{with doc}
 cd docs
-PYTHONPATH=$(echo $(pwd)/../build-3/lib.*) \
+PYTHONPATH=$(pwd)/../src \
 %{__python3} genAll.py
 cd ..
 %endif
@@ -121,6 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 # ?
 %{py3_sitescriptdir}/reportlab/fonts/callig15.afm
 %{py3_sitescriptdir}/reportlab/fonts/callig15.pfb
+%{py3_sitescriptdir}/reportlab/fonts/hb-test.ttf
 # Adobe fonts
 %{py3_sitescriptdir}/reportlab/fonts/_a*____.pfb
 %{py3_sitescriptdir}/reportlab/fonts/_e*____.pfb
